@@ -33,7 +33,19 @@
    methods: {
      goto(path){
        //编程式路由跳转
-       this.$router.replace(path)
+     // this.$router.replace(path)
+       //解决点击重复的跳转问题,重复点击不刷新
+       //方案1:如果点击当前项,没有任何任务效果
+      //  if(path!==this.$route.path){
+      //    this.$router.replace(path)
+      //  }
+      //方案2如果点击当前选项,刷新页面
+      if(path!==this.$route.path){
+        this.$router.replace(path)
+      }else{
+        window.location = path //发送一般的http请求,整个页面会被刷新
+      }
+       
      }
    },
 }

@@ -1,7 +1,7 @@
 <template>
  <section class="msite">
     <!--首页头部-->
-    <Header title="XXX">
+    <Header :title="address.name||'定位中...'">
      <span class="header_login" slot="right">
         <span class="header_login_text">登录|注册</span>
       </span>
@@ -11,115 +11,24 @@
     </Header>
     <!--首页导航-->
     <nav class="msite_nav">
-      <div class="swiper-container">
+      <div ref="sc1" class="swiper-container">
         <div class="swiper-wrapper">
-          <div class="swiper-slide">
-            <div class="link_to_food">
+          <div class="swiper-slide" v-for="(cs, index) in categorysArr2" :key="index">
+            <div class="link_to_food" v-for="(c, index) in cs" :key="index">
               <div class="food_container">
-                <img src="./images/nav/1.jpg">
+                <img :src="'https://fuss10.elemecdn.com' + c.image_url">
               </div>
-              <span>甜品饮品</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>商超便利</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/3.jpg">
-              </div>
-              <span>美食</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/4.jpg">
-              </div>
-              <span>简餐</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/5.jpg">
-              </div>
-              <span>新店特惠</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/6.jpg">
-              </div>
-              <span>准时达</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/7.jpg">
-              </div>
-              <span>预订早餐</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/8.jpg">
-              </div>
-              <span>土豪推荐</span>
-            </div>
-          </div>
-          <div class="swiper-slide">
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/9.jpg">
-              </div>
-              <span>甜品饮品</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/10.jpg">
-              </div>
-              <span>商超便利</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/11.jpg">
-              </div>
-              <span>美食</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/12.jpg">
-              </div>
-              <span>简餐</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/13.jpg">
-              </div>
-              <span>新店特惠</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/14.jpg">
-              </div>
-              <span>准时达</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/1.jpg">
-              </div>
-              <span>预订早餐</span>
-            </div>
-            <div class="link_to_food">
-              <div class="food_container">
-                <img src="./images/nav/2.jpg">
-              </div>
-              <span>土豪推荐</span>
+              <span>{{c.title}}</span>
             </div>
           </div>
         </div>
         <!-- Add Pagination -->
         <div class="swiper-pagination"></div>
       </div>
+       
     </nav>
     <!--首页附近商家-->
-    <div class="msite_shop_list">
+    <!-- <div class="msite_shop_list">
       <div class="shop_header">
         <i class="iconfont icon-xuanxiang"></i>
         <span class="shop_header_title">附近商家</span>
@@ -304,16 +213,137 @@
           </li>
         </ul>
       </div>
+    </div> -->
+    <div class="msite_shop_list">
+      <div class="shop_header">
+        <i class="iconfont icon-xuanxiang"></i>
+        <span class="shop_header_title">附近商家</span>
+      </div>
+      <div class="shop_container">
+        <ul class="shop_list" v-if="shops.length>0">
+          <li class="shop_li border-1px" v-for="shop in shops" :key="shop.id">
+            <a>
+              <div class="shop_left">
+                <img class="shop_img" :src="'https://fuss10.elemecdn.com' + shop.image_path">
+              </div>
+              <div class="shop_right">
+                <section class="shop_detail_header">
+                  <h4 class="shop_title ellipsis">{{shop.name}}</h4>
+                  <ul class="shop_detail_ul">
+                    <li class="supports" v-for="(support, index) in shop.supports" :key="index">{{support.icon_name}}</li>
+                  </ul>
+                </section>
+                <section class="shop_rating_order">
+                  <section class="shop_rating_order_left">
+                    <div class="star star-24">
+                      <span class="star-item on"></span>
+                      <span class="star-item on"></span>
+                      <span class="star-item on"></span>
+                      <span class="star-item half"></span>
+                      <span class="star-item off"></span>
+                    </div>
+                    <div class="rating_section">
+                      {{shop.rating}}
+                    </div>
+                    <div class="order_section">
+                      月售{{shop.recent_order_num}}单
+                    </div>
+                  </section>
+                  <section class="shop_rating_order_right">
+                    <span class="delivery_style delivery_right">{{shop.delivery_mode.text}}</span>
+                  </section>
+                </section>
+                <section class="shop_distance">
+                  <p class="shop_delivery_msg">
+                    <span>¥{{shop.float_minimum_order_amount}}起送</span>
+                    <span class="segmentation">/</span>
+                    <span>配送费约¥{{shop.float_delivery_fee}}</span>
+                  </p>
+                </section>
+              </div>
+            </a>
+          </li>
+        </ul>
+        <ul v-else>
+          <li>
+            <img src="./images/shop_back.svg" alt="loading">
+          </li>
+          <li>
+            <img src="./images/shop_back.svg" alt="loading">
+          </li>
+          <li>
+            <img src="./images/shop_back.svg" alt="loading">
+          </li>
+          <li>
+            <img src="./images/shop_back.svg" alt="loading">
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
 
+
 <script>
 import Swiper from 'swiper'
 import  'swiper/css/swiper.css'
+//从vuex中获取想要的数据address等
+import {mapState} from 'vuex' 
+ // import _ from 'lodash'
+//引入lodash库
+import chunk from 'lodash/chunk' //只打包引入的工具函数 ==> 打包文件更小
+
   export default {
-    mounted() {
-      new Swiper ('.swiper-container', {
+   
+    computed: {
+      //头部的地址信息
+      ...mapState(['address','categorys','shops']),
+      //商品的分类
+      /*根据一维数组生成二维数组
+      包含所有分类的数组
+      内部小数组的最大长度为8*/
+      categorysArr(){
+        //解构赋值获取categorys从state
+        const {categorys} = this
+        //创建二维数组
+        const bigArr = []
+        const smallArr = []
+
+       //遍历总的一维数组
+       categorys.forEach(c=>{
+         //如果二维数组为空,将小数组放入大数组中(只保存一次)
+         if(smallArr.length === 0){
+             bigArr.push(smallArr) 
+         }
+         //将c保存到小数组中
+         smallArr.push(c)
+
+        //小数组的最长长度为8 ==> 如果小数组满了创建一个新的小数组
+        if(smallArr.length === 8){
+          smallArr = []
+        }
+       })
+         //返回一个大的数组
+        return bigArr
+
+      },
+      //使用lodash库来实现
+      categorysArr2(){
+      // return _.chunk(this.categorys, 8)
+      return chunk(this.categorys, 8)
+      }
+
+    },
+     async mounted() {
+       /* 
+    解决swiper轮播不正常的问题?
+    方式1: watch + nextTick()
+    方式2: callback + nextTick()
+    方式3: 利用dipatch()返回的promise
+    */
+       this.$store.dispatch('getShops')
+       await this.$store.dispatch('getCategorys')  //dispatch返回的promise在数据更新且页面更新之后才成功
+      new Swiper (this.$refs.sc1, {
         loop: true, // 循环模式选项
         // 如果需要分页器
         pagination: {

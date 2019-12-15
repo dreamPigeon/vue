@@ -10,7 +10,11 @@
   export default {
   components:{
     FooterGuiter
-  }
+  },
+  //通过action异步获取adress并保存到state
+  async mounted() {
+    this.$store.dispatch('getAddress')
+  },
 }
 </script>
 
